@@ -193,7 +193,7 @@ def update_database(existing_df: pd.DataFrame) -> pd.DataFrame:
 
     # Convert API data to DataFrame
     new_records = [{
-        'date': img['enddate'],
+        'date': img['startdate'],
         'title': img['title'],
         'url': f"{url_base}{img['urlbase']}_UHD.jpg",
         'description': img['copyright']
