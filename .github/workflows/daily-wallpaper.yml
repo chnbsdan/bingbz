@@ -38,7 +38,7 @@ jobs:
 
       # ===== 4. 获取最新壁纸数据（调用 main.py） =====
       - name: Fetch latest wallpapers
-        run: python main.py --no-html --no-history
+        run: python main.py --no-html   # ← 移除了 --no-history
         continue-on-error: true  # 即使失败也继续（可能API暂时不可用）
 
       # ===== 5. 生成 JSON 数据（供前端和API使用） =====
