@@ -4,7 +4,7 @@ export async function onRequest(context) {
   const url = new URL(request.url);
   const base = `${url.protocol}//${url.host}`;
 
-  // ★★★ 获取壁纸数据（使用独立请求头，与 daily.js 保持一致）★★★
+  // ★★★ 获取壁纸数据 ★★★
   let totalCount = '--';
   let todayDate = '--';
   try {
@@ -22,8 +22,6 @@ export async function onRequest(context) {
         data.sort((a, b) => b.date.localeCompare(a.date));
         todayDate = data[0].date || '--';
       }
-    } else {
-      console.error(`Failed to fetch ${dataUrl}, status: ${res.status}`);
     }
   } catch (e) {
     console.error('Fetch error:', e.message);
@@ -61,19 +59,20 @@ export async function onRequest(context) {
       --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
+    /* ===== 亮色模式 - 重新配色 ===== */
     [data-theme="light"] {
-      --bg-primary: #f0f2f6;
+      --bg-primary: #eef1f5;
       --bg-secondary: #ffffff;
-      --bg-card: rgba(0,0,0,0.03);
-      --bg-card-hover: rgba(0,0,0,0.06);
+      --bg-card: rgba(255,255,255,0.6);
+      --bg-card-hover: rgba(255,255,255,0.85);
       --bg-code: rgba(0,0,0,0.04);
       --text-primary: #1a1a2e;
       --text-secondary: rgba(0,0,0,0.55);
-      --text-muted: rgba(0,0,0,0.3);
-      --border-color: rgba(0,0,0,0.07);
+      --text-muted: rgba(0,0,0,0.35);
+      --border-color: rgba(0,0,0,0.08);
       --border-hover: rgba(79,195,247,0.4);
       --shadow: 0 8px 32px rgba(0,0,0,0.06);
-      --accent-glow: rgba(79,195,247,0.1);
+      --accent-glow: rgba(79,195,247,0.12);
     }
 
     /* ===== Reset & Base ===== */
@@ -98,7 +97,7 @@ export async function onRequest(context) {
       margin: 0 auto;
     }
 
-    /* ===== Glow Orb (装饰光晕) ===== */
+    /* ===== Glow Orb ===== */
     .glow-orb {
       position: fixed;
       top: -20%;
@@ -122,6 +121,13 @@ export async function onRequest(context) {
       animation-delay: -10s;
     }
 
+    [data-theme="light"] .glow-orb {
+      background: radial-gradient(circle, rgba(79,195,247,0.04) 0%, transparent 70%);
+    }
+    [data-theme="light"] .glow-orb--bottom {
+      background: radial-gradient(circle, rgba(0,229,255,0.03) 0%, transparent 70%);
+    }
+
     @keyframes float {
       0%, 100% { transform: translate(0, 0) scale(1); }
       33% { transform: translate(30px, -20px) scale(1.05); }
@@ -130,33 +136,54 @@ export async function onRequest(context) {
 
     .container { position: relative; z-index: 1; }
 
-    /* ===== Theme Toggle ===== */
+    /* ===== 主题切换按钮 - 移到右下角 ===== */
     .theme-toggle-wrap {
-      display: flex;
-      justify-content: flex-end;
-      margin-bottom: 24px;
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 999;
     }
     .theme-toggle-btn {
-      background: var(--bg-card);
+      background: var(--bg-secondary);
       border: 1px solid var(--border-color);
       color: var(--text-secondary);
-      padding: 8px 18px;
-      border-radius: 100px;
+      padding: 12px 16px;
+      border-radius: 50%;
       cursor: pointer;
-      font-size: 13px;
+      font-size: 18px;
       transition: var(--transition);
       font-family: inherit;
-      display: inline-flex;
+      display: flex;
       align-items: center;
-      gap: 8px;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      justify-content: center;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: var(--shadow);
+      width: 48px;
+      height: 48px;
     }
     .theme-toggle-btn:hover {
       background: var(--bg-card-hover);
       color: var(--text-primary);
       border-color: var(--border-hover);
-      transform: scale(1.02);
+      transform: scale(1.05);
+    }
+    .theme-toggle-btn .btn-label {
+      display: none;
+    }
+
+    /* 响应式：小屏幕下按钮稍微小一点 */
+    @media (max-width: 480px) {
+      .theme-toggle-wrap {
+        bottom: 16px;
+        right: 16px;
+      }
+      .theme-toggle-btn {
+        width: 42px;
+        height: 42px;
+        font-size: 16px;
+        padding: 10px 12px;
+      }
     }
 
     /* ===== Header ===== */
@@ -616,7 +643,7 @@ export async function onRequest(context) {
     /* ===== Toast ===== */
     .toast {
       position: fixed;
-      bottom: 30px;
+      bottom: 80px;
       left: 50%;
       transform: translateX(-50%) translateY(80px);
       background: var(--bg-secondary);
@@ -639,7 +666,9 @@ export async function onRequest(context) {
       transform: translateX(-50%) translateY(0);
     }
 
-    /* ===== Responsive ===== */
+    /* ============================================================
+       ★★★ 响应式 ★★★
+    ============================================================ */
     @media (max-width: 768px) {
       body { padding: 16px 14px 40px; }
       .header-left h1 { font-size: 24px; }
@@ -662,6 +691,7 @@ export async function onRequest(context) {
       .header { flex-direction: column; align-items: stretch; }
       .header-right { justify-content: flex-start; }
       .header::after { width: 40px; }
+      .toast { bottom: 70px; font-size: 13px; padding: 8px 20px; }
     }
   </style>
 </head>
@@ -671,13 +701,15 @@ export async function onRequest(context) {
   <div class="glow-orb"></div>
   <div class="glow-orb glow-orb--bottom"></div>
 
-  <div class="container">
+  <!-- ===== 主题切换按钮 - 右下角 ===== -->
+  <div class="theme-toggle-wrap">
+    <button class="theme-toggle-btn" id="themeToggle" title="切换主题">
+      <i class="fas fa-moon" id="themeIcon"></i>
+      <span class="btn-label" id="themeLabel">深色</span>
+    </button>
+  </div>
 
-    <div class="theme-toggle-wrap">
-      <button class="theme-toggle-btn" id="themeToggle" title="切换主题">
-        <i class="fas fa-moon" id="themeIcon"></i> <span id="themeLabel">深色</span>
-      </button>
-    </div>
+  <div class="container">
 
     <div class="header">
       <div class="header-left">
@@ -686,7 +718,7 @@ export async function onRequest(context) {
           <span class="gradient-text">必应壁纸</span>
           <span style="font-weight:300; color:var(--text-muted); font-size:0.7em;">API</span>
         </h1>
-        <p><i class="fas fa-clock"></i> 图片自动更新：每天 0:10</p>
+        <p><i class="fas fa-clock"></i> 图片自动更新：每天 03:10</p>
       </div>
       <div class="header-right">
         <span class="badge"><i class="fas fa-code"></i> RESTful</span>
@@ -912,7 +944,7 @@ export async function onRequest(context) {
     }
 
     // ============================================================
-    // 4. 反馈按钮 (与主页评论联动)
+    // 4. 反馈按钮
     // ============================================================
     var feedbackLink = document.getElementById('feedbackLink');
     if (feedbackLink) {
