@@ -778,11 +778,11 @@ export async function onRequest(context) {
         <div class="api-path">/api/image <span class="method">GET</span></div>
         <div class="api-desc">获取指定日期的壁纸</div>
         <div class="api-code">
-          <span class="link-part"><a href="${base}/api/image?date=20260731" target="_blank">${base}/api/image?date=20260731</a></span>
-          <button class="copy-btn" onclick="copyText('${base}/api/image?date=20260731')"><i class="fas fa-copy"></i></button>
+          <span class="link-part"><a href="${base}/api/image?date=20210312" target="_blank">${base}/api/image?date=20210312</a></span>
+          <button class="copy-btn" onclick="copyText('${base}/api/image?date=20210312')"><i class="fas fa-copy"></i></button>
         </div>
         <div class="api-tags">
-          <code>?date=20260731</code> 格式：YYYYMMDD
+          <code>?date=20210312</code> 格式：YYYYMMDD
         </div>
       </div>
 
@@ -812,7 +812,7 @@ export async function onRequest(context) {
           <tr><th>参数</th><th>说明</th></tr>
         </thead>
         <tbody>
-          <tr><td>date</td><td>指定日期 <span class="param-desc">（格式：YYYYMMDD，如 20260731）</span></td></tr>
+          <tr><td>date</td><td>指定日期 <span class="param-desc">（格式：YYYYMMDD，如 20210312）</span></td></tr>
           <tr><td>format</td><td>图片格式 <span class="param-desc">（webp / jpeg / original，默认 webp）</span></td></tr>
           <tr><td>redirect</td><td>是否重定向到图片 <span class="param-desc">（true / false，默认 false）</span></td></tr>
           <tr><td>page</td><td>分页页码 <span class="param-desc">（默认 1）</span></td></tr>
@@ -832,7 +832,7 @@ export async function onRequest(context) {
       <div class="comment" style="margin-top:8px;">嵌入随机壁纸</div>
       &lt;img src="${base}/api/random" alt="随机壁纸" /&gt;
       <div class="comment" style="margin-top:8px;">嵌入指定日期壁纸</div>
-      &lt;img src="${base}/api/image?date=20260731" alt="壁纸" /&gt;
+      &lt;img src="${base}/api/image?date=20210312" alt="壁纸" /&gt;
       <div class="comment" style="margin-top:8px;">JavaScript 调用</div>
       fetch('${base}/api/random')
         .then(res => res.json())
@@ -855,7 +855,7 @@ export async function onRequest(context) {
     </div>
 
     <footer>
-      <span>© 2026 必应壁纸 · 图片来自 Bing</span>
+      <span>© 2026 必应每日壁纸 · 图片来自 Bing</span>
       <div class="footer-links">
         <a href="/" title="首页"><i class="fas fa-home"></i></a>
         <a href="https://github.com/chnbsdan/Bing-Wallpaper-Archive" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
