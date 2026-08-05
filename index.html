@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
-       /* ===== CSS 变量 ===== */
+        /* ===== CSS 变量 ===== */
 :root {
     --bg-primary: #0d0d1a;
     --bg-secondary: #1a1a2e;
@@ -98,7 +98,7 @@ html, body {
 #progress-bar { position: fixed; top: 0; left: 0; height: 2.5px; background: var(--progress-bar); width: 0%; z-index: 9999; transition: width 0.3s ease; box-shadow: 0 0 12px rgba(79,195,247,0.4); }
 
 /* ===== 导航栏 ===== */
-.nav-toggle { position: fixed; top: 12px; left: 12px; z-index: 1001; background: var(--nav-bg); backdrop-filter: blur(8px); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-primary); font-size: 16px; padding: 6px 8px; cursor: pointer; transition: 0.2s; line-height: 1; -webkit-tap-highlight-color: transparent; }
+.nav-toggle { position: fixed; top: 12px; left: 12px; z-index: 1001; background: var(--nav-bg); backdrop-filter: blur(8px); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary); font-size: 20px; padding: 6px 12px; cursor: pointer; transition: 0.2s; line-height: 1; -webkit-tap-highlight-color: transparent; }
 .nav-toggle:hover { background: var(--accent-hover); border-color: rgba(79,195,247,0.2); }
 .nav-toggle.hidden { display: none !important; }
 .navbar { position: fixed; top: 12px; left: 56px; z-index: 1000; background: var(--nav-bg); backdrop-filter: blur(16px); border: 1px solid var(--border-color); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; min-width: 200px; opacity: 0; transform: translateY(-10px) scale(0.95); transition: opacity 0.25s ease, transform 0.25s ease; pointer-events: none; box-shadow: 0 8px 32px var(--shadow-color); max-width: 90vw; }
@@ -457,27 +457,65 @@ html, body {
 .donate-qr-wrapper .qr-tooltip .qr-footer { text-align: center; color: rgba(255, 255, 255, 0.35); font-size: 10px; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.06); }
 .donate-qr-wrapper:hover .qr-tooltip { display: block; }
 
-.dropdown { position: relative; display: inline-block; }
-.dropdown .btn { padding-right: 8px; }
-.dropdown .btn i.fa-chevron-down { font-size: 9px; margin-left: 2px; opacity: 0.5; }
+/* ===== 下载下拉菜单 - 悬停触发 ===== */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+.dropdown .btn {
+    padding-right: 8px;
+}
+.dropdown .btn i.fa-chevron-down {
+    font-size: 9px;
+    margin-left: 2px;
+    opacity: 0.5;
+}
 .dropdown-menu {
     display: none;
     position: absolute;
-    top: calc(100% + 6px);
+    top: calc(100% - 2px);
     right: 0;
     background: rgba(20, 20, 35, 0.96);
     backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 10px;
-    padding: 4px 0;
-    min-width: 130px;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    padding: 6px 0;
+    min-width: 140px;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
     z-index: 20;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+    pointer-events: none;
 }
-.dropdown-menu.show { display: block; }
-.dropdown-menu a { display: block; padding: 6px 16px; color: rgba(255, 255, 255, 0.7); text-decoration: none; font-size: 12px; transition: 0.15s; white-space: nowrap; }
-.dropdown-menu a:hover { background: rgba(255, 255, 255, 0.06); color: #fff; }
-.dropdown-menu .divider { height: 1px; background: rgba(255, 255, 255, 0.06); margin: 4px 12px; }
+.dropdown:hover .dropdown-menu {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+.dropdown-menu a {
+    display: block;
+    padding: 7px 16px;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 12px;
+    transition: 0.15s;
+    white-space: nowrap;
+    cursor: pointer;
+}
+.dropdown-menu a:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+.dropdown-menu .divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.06);
+    margin: 4px 12px;
+}
 
 .donate-modal { display: none !important; }
 
@@ -753,7 +791,7 @@ html, body {
     .navbar .search-box input { font-size: 12px; padding: 4px 8px; }
     .navbar .nav-actions a, .navbar .nav-actions button { font-size: 12px; padding: 4px 8px; }
     #themeToggle { width: 28px; height: 28px; font-size: 13px; }
-    .nav-toggle { font-size: 14px; padding: 4px 8px; top: 8px; left: 8px; }
+    .nav-toggle { font-size: 16px; padding: 4px 8px; top: 8px; left: 8px; }
     .arrow { font-size: 16px; padding: 8px 6px; }
     .arrow-left { left: 2px; }
     .arrow-right { right: 2px; }
@@ -871,7 +909,7 @@ html, body {
     <!-- Twikoo CDN -->
     <script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.41/dist/twikoo.min.js"></script>
     <script>
-        // ============================================================
+               // ============================================================
         // 1. 路径适配
         // ============================================================
         function getBasePath() {
@@ -1456,27 +1494,18 @@ html, body {
 
         closePreviewBtn.addEventListener('click', closePreview);
 
-                // ============================================================
-        // 7.1 下载下拉菜单（支持 mobile 和 mobile_s 动态裁剪）
-        // ============================================================
-        downloadBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            downloadMenu.classList.toggle('show');
-        });
+       // ============================================================
+       // 7.1 下载下拉菜单 - 悬停触发（纯 CSS 控制）
+      // ============================================================
 
-        downloadMenu.querySelectorAll('a').forEach(function(item) {
-            item.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                var res = this.getAttribute('data-res');
-                downloadImage(currentPreviewIndex, res);
-                downloadMenu.classList.remove('show');
-            });
-        });
-
-        document.addEventListener('click', function() {
-            downloadMenu.classList.remove('show');
-        });
+// 点击下载选项执行下载
+downloadMenu.querySelectorAll('a').forEach(function(item) {
+    item.addEventListener('click', function(e) {
+        e.preventDefault();
+        var res = this.getAttribute('data-res');
+        downloadImage(currentPreviewIndex, res);
+    });
+});
 
         // 核心下载函数
         function downloadImage(index, resolution) {
