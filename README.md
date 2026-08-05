@@ -6,7 +6,7 @@
 [![Cloudflare Pages](https://img.shields.io/badge/Cloudflare%20Pages-部署成功-F38020?logo=cloudflare&logoColor=white)](https://bing-wallpaper-fetcher.pages.dev/)
 [![Python](https://img.shields.io/badge/Python-3.x-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 
-**在线演示**：[https://bing-wallpaper-fetcher.pages.dev](https://bing-wallpaper-fetcher.pages.dev) | API文档：[https://bing-wallpaper-fetcher.pages.dev/api](https://bing-wallpaper-fetcher.pages.dev/api)
+**在线演示**：[https://bingbz.pages.dev/](https://bingbz.pages.dev) | API文档：[https://bingbz.pages.dev/api](https://bingbz.pages.dev/api)
 
 ---
 
