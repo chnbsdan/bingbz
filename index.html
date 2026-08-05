@@ -852,7 +852,7 @@ html, body {
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <!-- ============================================================
+   <!-- ============================================================
     大图预览
     ============================================================ -->
     <div class="preview-overlay" id="previewOverlay">
@@ -878,28 +878,32 @@ html, body {
                 </div>
             </div>
 
-           <div class="donate-qr-wrapper">
-    <button class="btn" id="donateBtn"><i class="fas fa-mug-hot"></i><span>打赏</span></button>
-    <div class="qr-tooltip">
-        <div class="qr-row">
-            <div class="qr-item">
-                <img src="https://img.hangdn.com/hd/wechat.png" alt="微信支付" />
-                <span class="qr-label wechat"><i class="fab fa-weixin"></i> 微信支付</span>
+            <div class="donate-qr-wrapper">
+                <button class="btn" id="donateBtn"><i class="fas fa-mug-hot"></i><span>打赏</span></button>
+                <div class="qr-tooltip">
+                    <div class="qr-row">
+                        <div class="qr-item">
+                            <img src="https://img.hangdn.com/hd/wechat.png" alt="微信支付" />
+                            <span class="qr-label wechat"><i class="fab fa-weixin"></i> 微信支付</span>
+                        </div>
+                        <div class="qr-item">
+                            <img src="https://img.hangdn.com/hd/alipay.png" alt="支付宝" />
+                            <span class="qr-label alipay"><i class="fab fa-alipay"></i> 支付宝</span>
+                        </div>
+                    </div>
+                    <div class="qr-footer"><i class="fas fa-mug-hot"></i> 您的支持是我持续更新的动力</div>
+                </div>
             </div>
-            <div class="qr-item">
-                <img src="https://img.hangdn.com/hd/alipay.png" alt="支付宝" />
-                <span class="qr-label alipay"><i class="fab fa-alipay"></i> 支付宝</span>
-            </div>
+
+            <button class="btn" id="closePreviewBtn"><i class="fas fa-times"></i></button>
         </div>
-        <div class="qr-footer"><i class="fas fa-mug-hot"></i> 您的支持是我持续更新的动力</div>
-    </div>
-</div>
 
         <div class="info-panel" id="infoPanel">
             <div class="copyright" id="previewCopyright"></div>
             <div class="date" id="previewDate"></div>
             <div class="desc" id="previewDesc"></div>
         </div>
+
     </div>
 
    
