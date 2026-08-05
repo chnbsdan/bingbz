@@ -59,19 +59,19 @@ export async function onRequest(context) {
       --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
-    /* ===== 亮色模式 - 重新配色 ===== */
+    /* ===== 亮色模式 - 淡橙色系 ===== */
     [data-theme="light"] {
-      --bg-primary: #eef1f5;
+      --bg-primary: #faf0e6;
       --bg-secondary: #ffffff;
-      --bg-card: rgba(255,255,255,0.6);
-      --bg-card-hover: rgba(255,255,255,0.85);
+      --bg-card: rgba(255,248,240,0.7);
+      --bg-card-hover: rgba(255,248,240,0.95);
       --bg-code: rgba(0,0,0,0.04);
-      --text-primary: #1a1a2e;
-      --text-secondary: rgba(0,0,0,0.55);
-      --text-muted: rgba(0,0,0,0.35);
-      --border-color: rgba(0,0,0,0.08);
+      --text-primary: #2d1f14;
+      --text-secondary: rgba(45,31,20,0.55);
+      --text-muted: rgba(45,31,20,0.35);
+      --border-color: rgba(45,31,20,0.08);
       --border-hover: rgba(79,195,247,0.4);
-      --shadow: 0 8px 32px rgba(0,0,0,0.06);
+      --shadow: 0 8px 32px rgba(45,31,20,0.08);
       --accent-glow: rgba(79,195,247,0.12);
     }
 
@@ -122,10 +122,10 @@ export async function onRequest(context) {
     }
 
     [data-theme="light"] .glow-orb {
-      background: radial-gradient(circle, rgba(79,195,247,0.04) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(255,180,120,0.08) 0%, transparent 70%);
     }
     [data-theme="light"] .glow-orb--bottom {
-      background: radial-gradient(circle, rgba(0,229,255,0.03) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(255,200,150,0.06) 0%, transparent 70%);
     }
 
     @keyframes float {
@@ -136,7 +136,7 @@ export async function onRequest(context) {
 
     .container { position: relative; z-index: 1; }
 
-    /* ===== 主题切换按钮 - 移到右下角 ===== */
+    /* ===== 主题切换按钮 - 右下角 ===== */
     .theme-toggle-wrap {
       position: fixed;
       bottom: 24px;
@@ -172,7 +172,6 @@ export async function onRequest(context) {
       display: none;
     }
 
-    /* 响应式：小屏幕下按钮稍微小一点 */
     @media (max-width: 480px) {
       .theme-toggle-wrap {
         bottom: 16px;
@@ -345,10 +344,10 @@ export async function onRequest(context) {
       border: 1px solid var(--accent-glow);
     }
 
-    /* ===== API Grid ===== */
+    /* ===== API Grid - 2列 ===== */
     .api-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: 1fr 1fr;
       gap: 16px;
     }
     .api-card {
@@ -718,7 +717,7 @@ export async function onRequest(context) {
           <span class="gradient-text">必应壁纸</span>
           <span style="font-weight:300; color:var(--text-muted); font-size:0.7em;">API</span>
         </h1>
-        <p><i class="fas fa-clock"></i> 图片自动更新：每天 03:10</p>
+        <p><i class="fas fa-clock"></i> 图片自动更新：每天 0:10</p>
       </div>
       <div class="header-right">
         <span class="badge"><i class="fas fa-code"></i> RESTful</span>
