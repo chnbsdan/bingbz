@@ -39,86 +39,127 @@ export async function onRequest(context) {
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    
+    /* ===== CSS Variables ===== */
     :root {
-      --bg-primary: #0f0f1a;
-      --bg-secondary: #1a1a2e;
+      --bg-primary: #08080f;
+      --bg-secondary: #12121f;
       --bg-card: rgba(255,255,255,0.04);
       --bg-card-hover: rgba(255,255,255,0.08);
-      --bg-code: rgba(255,255,255,0.06);
-      --bg-donate: rgba(255,255,255,0.02);
+      --bg-code: rgba(255,255,255,0.05);
       --text-primary: #f0f0f5;
-      --text-secondary: rgba(255,255,255,0.65);
-      --text-muted: rgba(255,255,255,0.35);
+      --text-secondary: rgba(255,255,255,0.6);
+      --text-muted: rgba(255,255,255,0.3);
       --border-color: rgba(255,255,255,0.06);
-      --border-hover: rgba(79,195,247,0.25);
-      --shadow: 0 4px 24px rgba(0,0,0,0.3);
+      --border-hover: rgba(79,195,247,0.3);
+      --shadow: 0 8px 32px rgba(0,0,0,0.45);
       --accent: #4fc3f7;
-      --accent-glow: rgba(79,195,247,0.15);
+      --accent-glow: rgba(79,195,247,0.12);
       --gradient-start: #4fc3f7;
       --gradient-end: #00e5ff;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
     [data-theme="light"] {
-      --bg-primary: #f4f6fa;
+      --bg-primary: #f0f2f6;
       --bg-secondary: #ffffff;
       --bg-card: rgba(0,0,0,0.03);
       --bg-card-hover: rgba(0,0,0,0.06);
       --bg-code: rgba(0,0,0,0.04);
-      --bg-donate: rgba(0,0,0,0.015);
       --text-primary: #1a1a2e;
       --text-secondary: rgba(0,0,0,0.55);
       --text-muted: rgba(0,0,0,0.3);
       --border-color: rgba(0,0,0,0.07);
       --border-hover: rgba(79,195,247,0.4);
-      --shadow: 0 4px 24px rgba(0,0,0,0.06);
-      --accent: #4fc3f7;
-      --accent-glow: rgba(79,195,247,0.12);
-      --gradient-start: #4fc3f7;
-      --gradient-end: #00bcd4;
+      --shadow: 0 8px 32px rgba(0,0,0,0.06);
+      --accent-glow: rgba(79,195,247,0.1);
     }
+
+    /* ===== Reset & Base ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
       background: var(--bg-primary);
       color: var(--text-primary);
       min-height: 100vh;
-      padding: 30px 20px 60px;
-      transition: background 0.35s ease, color 0.35s ease;
+      padding: 28px 20px 60px;
+      transition: background 0.4s ease, color 0.4s ease;
       line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
-    a { color: var(--accent); text-decoration: none; transition: 0.2s; }
+
+    a { color: var(--accent); text-decoration: none; transition: var(--transition); }
     a:hover { opacity: 0.8; }
 
-    .container { max-width: 1000px; margin: 0 auto; }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
 
+    /* ===== Glow Orb (装饰光晕) ===== */
+    .glow-orb {
+      position: fixed;
+      top: -20%;
+      right: -10%;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(79,195,247,0.06) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+      animation: float 20s ease-in-out infinite;
+    }
+    .glow-orb--bottom {
+      top: auto;
+      bottom: -20%;
+      right: auto;
+      left: -10%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(0,229,255,0.04) 0%, transparent 70%);
+      animation-delay: -10s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -20px) scale(1.05); }
+      66% { transform: translate(-20px, 30px) scale(0.95); }
+    }
+
+    .container { position: relative; z-index: 1; }
+
+    /* ===== Theme Toggle ===== */
     .theme-toggle-wrap {
       display: flex;
       justify-content: flex-end;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
     .theme-toggle-btn {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
       color: var(--text-secondary);
-      padding: 8px 16px;
-      border-radius: 10px;
+      padding: 8px 18px;
+      border-radius: 100px;
       cursor: pointer;
       font-size: 13px;
-      transition: 0.3s;
+      transition: var(--transition);
       font-family: inherit;
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
     .theme-toggle-btn:hover {
       background: var(--bg-card-hover);
       color: var(--text-primary);
       border-color: var(--border-hover);
+      transform: scale(1.02);
     }
 
+    /* ===== Header ===== */
     .header {
       display: flex;
       justify-content: space-between;
@@ -128,18 +169,31 @@ export async function onRequest(context) {
       margin-bottom: 32px;
       padding-bottom: 24px;
       border-bottom: 1px solid var(--border-color);
+      position: relative;
+    }
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+      border-radius: 2px;
     }
     .header-left h1 {
-      font-size: 30px;
-      font-weight: 700;
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .header-left h1 .gradient-text {
       background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      letter-spacing: -0.5px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
     }
     .header-left h1 .icon-text {
       -webkit-text-fill-color: var(--text-primary);
@@ -160,76 +214,98 @@ export async function onRequest(context) {
     .header-right .badge {
       background: var(--accent-glow);
       color: var(--accent);
-      padding: 6px 16px;
-      border-radius: 20px;
+      padding: 5px 16px;
+      border-radius: 100px;
       font-size: 12px;
       font-weight: 500;
       border: 1px solid var(--accent-glow);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
     }
     .header-right .btn-back {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
       color: var(--text-secondary);
-      padding: 8px 16px;
-      border-radius: 10px;
+      padding: 8px 18px;
+      border-radius: 100px;
       font-size: 13px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: var(--transition);
       font-family: inherit;
       display: inline-flex;
       align-items: center;
       gap: 6px;
       text-decoration: none;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
     }
     .header-right .btn-back:hover {
       background: var(--bg-card-hover);
       color: var(--text-primary);
       border-color: var(--border-hover);
+      transform: translateY(-1px);
     }
 
+    /* ===== Stats ===== */
     .stats {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
       gap: 14px;
-      margin-bottom: 32px;
+      margin-bottom: 36px;
     }
     .stat-card {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: 18px 20px;
+      border-radius: var(--radius);
+      padding: 20px 18px;
       text-align: center;
-      transition: 0.3s;
-      backdrop-filter: blur(4px);
+      transition: var(--transition);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      position: relative;
+      overflow: hidden;
     }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+      opacity: 0;
+      transition: var(--transition);
+    }
+    .stat-card:hover::before { opacity: 1; }
     .stat-card:hover {
       border-color: var(--border-hover);
-      transform: translateY(-2px);
+      transform: translateY(-3px);
       box-shadow: var(--shadow);
     }
     .stat-card .num {
-      font-size: 28px;
+      font-size: 30px;
       font-weight: 700;
       color: var(--text-primary);
       line-height: 1.2;
     }
     .stat-card .num i { color: var(--accent); margin-right: 6px; }
     .stat-card .label {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--text-muted);
       margin-top: 4px;
       font-weight: 500;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.5px;
       text-transform: uppercase;
     }
 
+    /* ===== Section Titles ===== */
     .section-title {
       font-size: 18px;
       font-weight: 600;
-      margin: 32px 0 16px;
+      margin: 36px 0 16px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
     .section-title i { color: var(--accent); font-size: 20px; }
     .section-title .tag {
@@ -237,39 +313,56 @@ export async function onRequest(context) {
       font-weight: 500;
       background: var(--accent-glow);
       color: var(--accent);
-      padding: 2px 12px;
-      border-radius: 12px;
+      padding: 2px 14px;
+      border-radius: 100px;
+      border: 1px solid var(--accent-glow);
     }
 
+    /* ===== API Grid ===== */
     .api-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 14px;
+      gap: 16px;
     }
     .api-card {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: 18px 20px;
-      transition: 0.3s;
-      backdrop-filter: blur(4px);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      transition: var(--transition);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      position: relative;
+      overflow: hidden;
     }
+    .api-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+      opacity: 0;
+      transition: var(--transition);
+    }
+    .api-card:hover::before { opacity: 1; }
     .api-card:hover {
       background: var(--bg-card-hover);
       border-color: var(--border-hover);
-      transform: translateY(-3px);
+      transform: translateY(-4px);
       box-shadow: var(--shadow);
     }
     .api-card .api-label {
       font-size: 11px;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.8px;
       font-weight: 600;
       margin-bottom: 4px;
     }
     .api-card .api-path {
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 600;
       color: var(--text-primary);
       font-family: 'SF Mono', 'Fira Code', monospace;
@@ -277,16 +370,17 @@ export async function onRequest(context) {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 8px;
     }
     .api-card .api-path .method {
       font-size: 10px;
-      font-weight: 600;
+      font-weight: 700;
       background: var(--accent-glow);
       color: var(--accent);
-      padding: 1px 10px;
+      padding: 1px 12px;
       border-radius: 4px;
       font-family: inherit;
+      letter-spacing: 0.3px;
     }
     .api-card .api-desc {
       font-size: 13px;
@@ -294,10 +388,10 @@ export async function onRequest(context) {
       line-height: 1.5;
     }
     .api-card .api-code {
-      margin-top: 10px;
+      margin-top: 12px;
       background: var(--bg-code);
-      border-radius: 8px;
-      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      padding: 8px 14px;
       font-size: 12px;
       font-family: 'SF Mono', 'Fira Code', monospace;
       color: var(--text-secondary);
@@ -308,7 +402,7 @@ export async function onRequest(context) {
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      transition: 0.2s;
+      transition: var(--transition);
     }
     .api-card .api-code:hover {
       border-color: var(--border-hover);
@@ -320,7 +414,7 @@ export async function onRequest(context) {
     }
     .api-card .api-code .link-part a {
       color: var(--text-secondary);
-      transition: 0.2s;
+      transition: var(--transition);
     }
     .api-card .api-code .link-part a:hover {
       color: var(--accent);
@@ -330,39 +424,45 @@ export async function onRequest(context) {
       border: none;
       color: var(--text-muted);
       cursor: pointer;
-      font-size: 13px;
-      transition: 0.2s;
+      font-size: 14px;
+      transition: var(--transition);
       font-family: inherit;
       padding: 0 4px;
       flex-shrink: 0;
     }
     .api-card .api-code .copy-btn:hover { color: var(--accent); }
     .api-card .api-tags {
-      margin-top: 8px;
+      margin-top: 10px;
       font-size: 12px;
       color: var(--text-muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
     }
     .api-card .api-tags code {
       background: var(--bg-code);
-      padding: 1px 8px;
+      padding: 1px 10px;
       border-radius: 4px;
       font-size: 11px;
       font-family: 'SF Mono', 'Fira Code', monospace;
       color: var(--text-secondary);
+      border: 1px solid var(--border-color);
     }
 
+    /* ===== Params Table ===== */
     .params-table-wrap {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: 16px 20px;
+      border-radius: var(--radius);
+      padding: 18px 22px;
       overflow-x: auto;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
     }
     .params-table {
       width: 100%;
       border-collapse: collapse;
       font-size: 14px;
-      margin-top: 0;
     }
     .params-table th {
       text-align: left;
@@ -370,12 +470,12 @@ export async function onRequest(context) {
       font-weight: 600;
       font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      padding: 8px 10px 8px 0;
+      letter-spacing: 0.8px;
+      padding: 8px 12px 8px 0;
       border-bottom: 1px solid var(--border-color);
     }
     .params-table td {
-      padding: 10px 10px 10px 0;
+      padding: 10px 12px 10px 0;
       border-bottom: 1px solid var(--border-color);
       color: var(--text-secondary);
     }
@@ -391,16 +491,19 @@ export async function onRequest(context) {
     }
     .params-table tr:last-child td { border-bottom: none; }
 
+    /* ===== Example Box ===== */
     .example-box {
       background: var(--bg-code);
       border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: 16px 20px;
+      border-radius: var(--radius);
+      padding: 18px 22px;
       font-family: 'SF Mono', 'Fira Code', monospace;
       font-size: 13px;
       color: var(--text-secondary);
       overflow-x: auto;
-      line-height: 1.8;
+      line-height: 1.9;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
     }
     .example-box .comment {
       color: var(--text-muted);
@@ -410,34 +513,44 @@ export async function onRequest(context) {
       content: '// ';
     }
 
+    /* ===== Donate Section ===== */
     .donate-section {
-      margin-top: 40px;
-      padding: 28px 32px;
-      background: var(--bg-donate);
+      margin-top: 44px;
+      padding: 32px 28px;
+      background: var(--bg-card);
       border: 1px solid var(--border-color);
-      border-radius: 16px;
+      border-radius: var(--radius);
       text-align: center;
-      transition: 0.3s;
+      transition: var(--transition);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
     }
     .donate-section:hover {
       border-color: var(--border-hover);
+      box-shadow: var(--shadow);
     }
     .donate-section .donate-title {
-      font-size: 17px;
+      font-size: 18px;
       font-weight: 600;
       color: var(--text-primary);
       margin-bottom: 4px;
     }
-    .donate-section .donate-title i { color: #ff6b6b; margin-right: 8px; }
+    .donate-section .donate-title i {
+      background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-right: 8px;
+    }
     .donate-section .donate-desc {
       font-size: 13px;
       color: var(--text-muted);
-      margin-bottom: 16px;
+      margin-bottom: 18px;
     }
     .donate-section .qr-row {
       display: flex;
       justify-content: center;
-      gap: 32px;
+      gap: 36px;
       flex-wrap: wrap;
     }
     .donate-section .qr-item {
@@ -449,15 +562,15 @@ export async function onRequest(context) {
     .donate-section .qr-item img {
       width: 120px;
       height: 120px;
-      border-radius: 12px;
+      border-radius: var(--radius-sm);
       background: #ffffff;
       padding: 6px;
       border: 1px solid var(--border-color);
-      transition: 0.3s;
+      transition: var(--transition);
     }
     .donate-section .qr-item img:hover {
-      transform: scale(1.04);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      transform: scale(1.05);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
     }
     .donate-section .qr-item .qr-label {
       font-size: 12px;
@@ -467,8 +580,9 @@ export async function onRequest(context) {
     .donate-section .qr-item .qr-label.wechat { color: #07c160; }
     .donate-section .qr-item .qr-label.alipay { color: #1677ff; }
 
+    /* ===== Footer ===== */
     footer {
-      margin-top: 32px;
+      margin-top: 36px;
       padding-top: 20px;
       border-top: 1px solid var(--border-color);
       display: flex;
@@ -479,59 +593,83 @@ export async function onRequest(context) {
       font-size: 13px;
       color: var(--text-muted);
     }
-    footer .footer-links { display: flex; gap: 16px; }
+    footer .footer-links { display: flex; gap: 18px; }
     footer .footer-links a {
       color: var(--text-muted);
-      transition: 0.2s;
-      font-size: 15px;
+      transition: var(--transition);
+      font-size: 16px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
     }
-    footer .footer-links a:hover { color: var(--text-primary); }
+    footer .footer-links a:hover {
+      color: var(--text-primary);
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
 
+    /* ===== Toast ===== */
     .toast {
       position: fixed;
       bottom: 30px;
       left: 50%;
       transform: translateX(-50%) translateY(80px);
       background: var(--bg-secondary);
-      backdrop-filter: blur(12px);
-      padding: 10px 24px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 10px 28px;
       border-radius: 12px;
       font-size: 14px;
       color: var(--text-primary);
       border: 1px solid var(--border-color);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
       opacity: 0;
-      transition: all 0.4s ease;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       pointer-events: none;
       z-index: 999;
+      font-weight: 500;
     }
     .toast.show {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
 
-    @media (max-width: 640px) {
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
       body { padding: 16px 14px 40px; }
-      .header-left h1 { font-size: 22px; }
+      .header-left h1 { font-size: 24px; }
       .header-left h1 .icon-text { display: none; }
-      .stats { grid-template-columns: repeat(2, 1fr); }
+      .stats { grid-template-columns: repeat(3, 1fr); }
       .api-grid { grid-template-columns: 1fr; }
       .api-card .api-code { font-size: 11px; white-space: normal; word-break: break-all; }
       .donate-section .qr-item img { width: 90px; height: 90px; }
       .params-table { font-size: 13px; }
-      .params-table td, .params-table th { padding: 4px 6px 4px 0; }
+      .params-table td, .params-table th { padding: 6px 8px 6px 0; }
       footer { flex-direction: column; text-align: center; }
       .header-right .badge { font-size: 11px; padding: 4px 12px; }
+      .glow-orb { display: none; }
     }
-    @media (max-width: 400px) {
+    @media (max-width: 480px) {
       .stats { grid-template-columns: 1fr; }
-      .donate-section .qr-row { gap: 16px; }
+      .donate-section .qr-row { gap: 20px; }
       .donate-section .qr-item img { width: 75px; height: 75px; }
-      .header-left h1 { font-size: 19px; }
+      .header-left h1 { font-size: 20px; }
+      .header { flex-direction: column; align-items: stretch; }
+      .header-right { justify-content: flex-start; }
+      .header::after { width: 40px; }
     }
   </style>
 </head>
 <body>
+
+  <!-- ===== Glow Orbs ===== -->
+  <div class="glow-orb"></div>
+  <div class="glow-orb glow-orb--bottom"></div>
 
   <div class="container">
 
@@ -544,12 +682,14 @@ export async function onRequest(context) {
     <div class="header">
       <div class="header-left">
         <h1>
-          <span class="icon-text">📷</span> 必应壁纸 API
+          <span class="icon-text">📷</span>
+          <span class="gradient-text">必应壁纸</span>
+          <span style="font-weight:300; color:var(--text-muted); font-size:0.7em;">API</span>
         </h1>
-        <p><i class="fas fa-clock"></i> 图片自动更新时间：每天 0:10</p>
+        <p><i class="fas fa-clock"></i> 图片自动更新：每天 0:10</p>
       </div>
       <div class="header-right">
-        <span class="badge"><i class="fas fa-code"></i> RESTful API</span>
+        <span class="badge"><i class="fas fa-code"></i> RESTful</span>
         <a href="/" class="btn-back"><i class="fas fa-arrow-left"></i> 返回首页</a>
       </div>
     </div>
@@ -585,7 +725,7 @@ export async function onRequest(context) {
           <button class="copy-btn" onclick="copyText('${base}/api/daily')"><i class="fas fa-copy"></i></button>
         </div>
         <div class="api-tags">
-          <code>?format=webp</code> · <code>?format=jpeg</code> · <code>?format=original</code>
+          <code>?format=webp</code> <code>?format=jpeg</code> <code>?format=original</code>
         </div>
       </div>
 
@@ -630,7 +770,7 @@ export async function onRequest(context) {
 
     </div>
 
-    <div class="section-title" style="margin-top:36px;">
+    <div class="section-title" style="margin-top:40px;">
       <i class="fas fa-cog"></i> 参数说明
       <span class="tag">可选</span>
     </div>
@@ -641,31 +781,16 @@ export async function onRequest(context) {
           <tr><th>参数</th><th>说明</th></tr>
         </thead>
         <tbody>
-          <tr>
-            <td>date</td>
-            <td>指定日期 <span class="param-desc">（格式：YYYYMMDD，如 20260731）</span></td>
-          </tr>
-          <tr>
-            <td>format</td>
-            <td>图片格式 <span class="param-desc">（webp / jpeg / original，默认 webp）</span></td>
-          </tr>
-          <tr>
-            <td>redirect</td>
-            <td>是否重定向到图片 <span class="param-desc">（true / false，默认 false）</span></td>
-          </tr>
-          <tr>
-            <td>page</td>
-            <td>分页页码 <span class="param-desc">（默认 1）</span></td>
-          </tr>
-          <tr>
-            <td>size</td>
-            <td>每页数量 <span class="param-desc">（默认 30，最大 100）</span></td>
-          </tr>
+          <tr><td>date</td><td>指定日期 <span class="param-desc">（格式：YYYYMMDD，如 20260731）</span></td></tr>
+          <tr><td>format</td><td>图片格式 <span class="param-desc">（webp / jpeg / original，默认 webp）</span></td></tr>
+          <tr><td>redirect</td><td>是否重定向到图片 <span class="param-desc">（true / false，默认 false）</span></td></tr>
+          <tr><td>page</td><td>分页页码 <span class="param-desc">（默认 1）</span></td></tr>
+          <tr><td>size</td><td>每页数量 <span class="param-desc">（默认 30，最大 100）</span></td></tr>
         </tbody>
       </table>
     </div>
 
-    <div class="section-title" style="margin-top:36px;">
+    <div class="section-title" style="margin-top:40px;">
       <i class="fas fa-code"></i> 使用示例
       <span class="tag">HTML</span>
     </div>
@@ -702,7 +827,7 @@ export async function onRequest(context) {
       <span>© 2026 必应壁纸 · 图片来自 Bing</span>
       <div class="footer-links">
         <a href="/" title="首页"><i class="fas fa-home"></i></a>
-        <a href="https://github.com" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+        <a href="https://github.com/chnbsdan/Bing-Wallpaper-Archive" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
         <a href="#" title="反馈" id="feedbackLink"><i class="fas fa-bug"></i></a>
       </div>
     </footer>
@@ -753,7 +878,7 @@ export async function onRequest(context) {
     function copyText(text) {
       if (navigator.clipboard) {
         navigator.clipboard.writeText(text).then(function() {
-          showToast('✅ 已复制: ' + text);
+          showToast('✅ 已复制');
         }).catch(function() {
           fallbackCopy(text);
         });
@@ -769,7 +894,7 @@ export async function onRequest(context) {
       input.select();
       try {
         document.execCommand('copy');
-        showToast('✅ 已复制: ' + text);
+        showToast('✅ 已复制');
       } catch (e) {
         showToast('⚠️ 复制失败，请手动复制');
       }
@@ -787,7 +912,7 @@ export async function onRequest(context) {
     }
 
     // ============================================================
-    // 4. 反馈按钮
+    // 4. 反馈按钮 (与主页评论联动)
     // ============================================================
     var feedbackLink = document.getElementById('feedbackLink');
     if (feedbackLink) {
